@@ -1,15 +1,15 @@
 package aws
 
 import (
-        "fmt"
-        "reflect"
-        "strings"
-        "testing"
+	"fmt"
+	"reflect"
+	"strings"
+	"testing"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/ec2"
-        "github.com/hashicorp/terraform/helper/acctest"
+	"github.com/hashicorp/terraform/helper/acctest"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/hashicorp/terraform/terraform"
@@ -386,64 +386,62 @@ func TestAccAWSSecurityGroup_DefaultEgress(t *testing.T) {
 
 // Testing drift detection with groups containing the same port and types
 func TestAccAWSSecurityGroup_drift(t *testing.T) {
-        var group ec2.SecurityGroup
-        resource.Test(t, resource.TestCase{
-                PreCheck:     func() { testAccPreCheck(t) },
-                Providers:    testAccProviders,
-                CheckDestroy: testAccCheckAWSSecurityGroupDestroy,
-                Steps: []resource.TestStep{
-                        resource.TestStep{
-                                Config: testAccAWSSecurityGroupConfig_drift(),
-                                Check: resource.ComposeTestCheckFunc(
-                                        testAccCheckAWSSecurityGroupExists("aws_security_group.web", &group),
-                                        // testAccCheckAWSSecurityGroupAttributes(&group),
-                                        resource.TestCheckResourceAttr(
-                                                "aws_security_group.web", "description", "Used in the terraform acceptance tests"),
-                                        // resource.TestCheckResourceAttr(
-                                        // 	"aws_security_group.web", "ingress.3629188364.protocol", "tcp"),
-                                        // resource.TestCheckResourceAttr(
-                                        // 	"aws_security_group.web", "ingress.3629188364.from_port", "80"),
-                                        // resource.TestCheckResourceAttr(
-                                        // 	"aws_security_group.web", "ingress.3629188364.to_port", "8000"),
-                                        // resource.TestCheckResourceAttr(
-                                        // 	"aws_security_group.web", "ingress.3629188364.cidr_blocks.#", "1"),
-                                        // resource.TestCheckResourceAttr(
-                                        // 	"aws_security_group.web", "ingress.3629188364.cidr_blocks.0", "10.0.0.0/8"),
-                                ),
-                        },
-                },
-        })
+	var group ec2.SecurityGroup
+	resource.Test(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckAWSSecurityGroupDestroy,
+		Steps: []resource.TestStep{
+			resource.TestStep{
+				Config: testAccAWSSecurityGroupConfig_drift(),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckAWSSecurityGroupExists("aws_security_group.web", &group),
+					resource.TestCheckResourceAttr(
+						"aws_security_group.web", "description", "Used in the terraform acceptance tests"),
+					resource.TestCheckResourceAttr(
+						"aws_security_group.web", "ingress.3629188364.protocol", "tcp"),
+					resource.TestCheckResourceAttr(
+						"aws_security_group.web", "ingress.3629188364.from_port", "80"),
+					resource.TestCheckResourceAttr(
+						"aws_security_group.web", "ingress.3629188364.to_port", "8000"),
+					resource.TestCheckResourceAttr(
+						"aws_security_group.web", "ingress.3629188364.cidr_blocks.#", "1"),
+					resource.TestCheckResourceAttr(
+						"aws_security_group.web", "ingress.3629188364.cidr_blocks.0", "10.0.0.0/8"),
+				),
+			},
+		},
+	})
 }
 
 func TestAccAWSSecurityGroup_drift_complex(t *testing.T) {
-        var group ec2.SecurityGroup
+	var group ec2.SecurityGroup
 
-        resource.Test(t, resource.TestCase{
-                PreCheck:     func() { testAccPreCheck(t) },
-                Providers:    testAccProviders,
-                CheckDestroy: testAccCheckAWSSecurityGroupDestroy,
-                Steps: []resource.TestStep{
-                        resource.TestStep{
-                                Config: testAccAWSSecurityGroupConfig_drift_complex(),
-                                Check: resource.ComposeTestCheckFunc(
-                                        testAccCheckAWSSecurityGroupExists("aws_security_group.web", &group),
-                                        // testAccCheckAWSSecurityGroupAttributes(&group),
-                                        resource.TestCheckResourceAttr(
-                                                "aws_security_group.web", "description", "Used in the terraform acceptance tests"),
-                                        // resource.TestCheckResourceAttr(
-                                        // 	"aws_security_group.web", "ingress.3629188364.protocol", "tcp"),
-                                        // resource.TestCheckResourceAttr(
-                                        // 	"aws_security_group.web", "ingress.3629188364.from_port", "80"),
-                                        // resource.TestCheckResourceAttr(
-                                        // 	"aws_security_group.web", "ingress.3629188364.to_port", "8000"),
-                                        // resource.TestCheckResourceAttr(
-                                        // 	"aws_security_group.web", "ingress.3629188364.cidr_blocks.#", "1"),
-                                        // resource.TestCheckResourceAttr(
-                                        // 	"aws_security_group.web", "ingress.3629188364.cidr_blocks.0", "10.0.0.0/8"),
-                                ),
-                        },
-                },
-        })
+	resource.Test(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckAWSSecurityGroupDestroy,
+		Steps: []resource.TestStep{
+			resource.TestStep{
+				Config: testAccAWSSecurityGroupConfig_drift_complex(),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckAWSSecurityGroupExists("aws_security_group.web", &group),
+					resource.TestCheckResourceAttr(
+						"aws_security_group.web", "description", "Used in the terraform acceptance tests"),
+					resource.TestCheckResourceAttr(
+						"aws_security_group.web", "ingress.3629188364.protocol", "tcp"),
+					resource.TestCheckResourceAttr(
+						"aws_security_group.web", "ingress.3629188364.from_port", "80"),
+					resource.TestCheckResourceAttr(
+						"aws_security_group.web", "ingress.3629188364.to_port", "8000"),
+					resource.TestCheckResourceAttr(
+						"aws_security_group.web", "ingress.3629188364.cidr_blocks.#", "1"),
+					resource.TestCheckResourceAttr(
+						"aws_security_group.web", "ingress.3629188364.cidr_blocks.0", "10.0.0.0/8"),
+				),
+			},
+		},
+	})
 }
 
 func testAccCheckAWSSecurityGroupDestroy(s *terraform.State) error {
@@ -613,6 +611,25 @@ func TestAccAWSSecurityGroup_tags(t *testing.T) {
 					testAccCheckAWSSecurityGroupExists("aws_security_group.foo", &group),
 					testAccCheckTags(&group.Tags, "foo", ""),
 					testAccCheckTags(&group.Tags, "bar", "baz"),
+				),
+			},
+		},
+	})
+}
+
+func TestAccAWSSecurityGroup_CIDRandGroups(t *testing.T) {
+	var group ec2.SecurityGroup
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckAWSSecurityGroupDestroy,
+		Steps: []resource.TestStep{
+			resource.TestStep{
+				Config: testAccAWSSecurityGroupCombindCIDRandGroups,
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckAWSSecurityGroupExists("aws_security_group.mixed", &group),
+					// testAccCheckAWSSecurityGroupAttributes(&group),
 				),
 			},
 		},
@@ -996,7 +1013,7 @@ resource "aws_security_group" "baz" {
 `
 
 func testAccAWSSecurityGroupConfig_drift() string {
-        return fmt.Sprintf(`
+	return fmt.Sprintf(`
 resource "aws_security_group" "web" {
   name = "tf_acc_%d"
   description = "Used in the terraform acceptance tests"
@@ -1023,7 +1040,7 @@ resource "aws_security_group" "web" {
 }
 
 func testAccAWSSecurityGroupConfig_drift_complex() string {
-        return fmt.Sprintf(`
+	return fmt.Sprintf(`
 resource "aws_security_group" "otherweb" {
   name        = "tf_acc_%d"
   description = "Used in the terraform acceptance tests"
@@ -1080,3 +1097,47 @@ resource "aws_security_group" "web" {
   }
 }`, acctest.RandInt(), acctest.RandInt())
 }
+
+const testAccAWSSecurityGroupCombindCIDRandGroups = `
+resource "aws_security_group" "two" {
+	name = "tf-test-1"
+	tags {
+		Name = "tf-test-1"
+	}
+}
+
+resource "aws_security_group" "one" {
+	name = "tf-test-2"
+	tags {
+		Name = "tf-test-w"
+	}
+}
+
+resource "aws_security_group" "three" {
+	name = "tf-test-3"
+	tags {
+		Name = "tf-test-3"
+	}
+}
+
+resource "aws_security_group" "mixed" {
+  name = "tf-mix-test"
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/16", "10.1.0.0/16", "10.7.0.0/16"]
+
+    security_groups = [
+      "${aws_security_group.one.id}",
+      "${aws_security_group.two.id}",
+      "${aws_security_group.three.id}",
+    ]
+  }
+
+  tags {
+    Name = "tf-mix-test"
+  }
+}
+`
